@@ -3,6 +3,9 @@ package com.nilay.githubusers.api
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,7 +16,10 @@ import javax.inject.Singleton
  * @Inject annotation provides the same instance of this class
  * */
 @Singleton
-class UserRepository @Inject constructor(private val usersApi: UsersApi) {
+class UserRepository @Inject constructor(
+    private val usersApi: UsersApi,
+    private val userDetailsApi: UserDetailsApi
+) {
 
     /**
      * Returns a [liveData] paged results
@@ -33,5 +39,8 @@ class UserRepository @Inject constructor(private val usersApi: UsersApi) {
         const val PAGE_SIZE = 30
         const val MAX_SIZE = 100
     }
+
+    suspend fun getUserDetails(name: String) =
+        userDetailsApi.getUserDetail(name)
 
 }

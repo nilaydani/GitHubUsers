@@ -13,5 +13,6 @@ data class User(
     @SerializedName("login") val name: String,
     @SerializedName("score") val score: String,
     @SerializedName("avatar_url") val avatarUrl: String,
-    @SerializedName("html_url") val url: String
+    @SerializedName("url") val url: String,
+    @SerializedName("html_url") val htmlUrl: String
 ) : Parcelable

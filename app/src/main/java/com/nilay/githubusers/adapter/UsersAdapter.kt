@@ -1,23 +1,24 @@
 package com.nilay.githubusers.adapter
 
-import android.content.Context
-import android.util.Log
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.nilay.githubusers.R
 import com.nilay.githubusers.databinding.ItemUserBinding
 import com.nilay.githubusers.model.User
+import com.nilay.githubusers.presentation.details.DetailActivity
+import com.nilay.githubusers.presentation.details.DetailActivity.Companion.BUNDLE_ARG_USER_NAME
 
 /**
  * Users list adapter to be bind to the recyclerview to display list of users
  * params -> context?: optional
  * */
-class UsersAdapter(private val context: Context?) :
+class UsersAdapter(private val context: Activity?) :
     PagingDataAdapter<User, UsersAdapter.UserViewHolder>(USER_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -43,16 +44,12 @@ class UsersAdapter(private val context: Context?) :
                 if (position != RecyclerView.NO_POSITION) {
                     val item = getItem(position)
                     if (item != null && context != null) {
-                        /* FinestWebView.Builder(context)
-                             .titleDefault("Details")
-                             .toolbarScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL)
-                             .gradientDivider(false)
-                             .dividerHeight(100)
-                             .iconPressedColorRes(R.color.black)
-                             .progressBarColorRes(R.color.green_200)
-                             .backPressToClose(false)
-                             .show(item.url);*/
-                        Log.e("####", "URL :: ${item.url}")
+                        context.startActivity(
+                            Intent(context, DetailActivity::class.java).putExtra(
+                                BUNDLE_ARG_USER_NAME,
+                                item.url
+                            )
+                        )
                     }
                 }
             }
@@ -65,13 +62,12 @@ class UsersAdapter(private val context: Context?) :
                 Glide.with(itemView)
                     .load(user.avatarUrl)
                     .centerCrop()
-                    .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_baseline_error_outline_24)
                     .into(avatarImageView)
 
                 textviewName.text = user.name
                 textviewScore.text = user.score
-                textviewUrl.text = user.url
+                textviewUrl.text = user.htmlUrl
             }
         }
 

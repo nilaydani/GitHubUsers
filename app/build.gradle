@@ -63,6 +63,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
@@ -85,27 +87,14 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.14.2"
 
     // Paging 3
-    implementation "androidx.paging:paging-runtime:3.0.0-alpha05"
+    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
 
     // Navigation Component
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
 
-    // Rx
-    implementation "io.reactivex.rxjava2:rxjava:2.2.21"
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
-
-    // dagger
-    implementation "com.google.dagger:dagger:2.44"
-    implementation "com.google.dagger:dagger-android-support:2.43"
-    kapt "com.google.dagger:dagger-compiler:2.44"
-    kapt "com.google.dagger:dagger-android-processor:2.43"
-
     // avatar image view
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-
-    // web view
-//    implementation 'com.thefinestartist:finestwebview:1.2.1'
 
     // for instrumented tests
     androidTestImplementation "androidx.test.ext:junit:1.1.3"

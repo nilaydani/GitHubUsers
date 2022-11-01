@@ -1,5 +1,6 @@
 package com.nilay.githubusers.di
 
+import com.nilay.githubusers.api.UserDetailsApi
 import com.nilay.githubusers.api.UsersApi
 import com.nilay.githubusers.api.UsersApi.Companion.BASE_URL
 import dagger.Module
@@ -42,4 +43,12 @@ object AppModule {
     @Singleton
     fun provideUserApi(retrofit: Retrofit): UsersApi =
         retrofit.create(UsersApi::class.java)
+
+    /**
+     * Provies userDetails Api
+     * */
+    @Provides
+    @Singleton
+    fun provideUserDetailsApi(retrofit: Retrofit): UserDetailsApi =
+        retrofit.create(UserDetailsApi::class.java)
 }

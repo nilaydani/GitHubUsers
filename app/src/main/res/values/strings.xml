@@ -1,11 +1,10 @@
 <resources>
-    <string name="app_name">Test Mobile</string>
+    <string name="app_name">GitHub Users</string>
     <string name="user_avatar_image">user avatar image</string>
 
     <!--user load state adapter xml-->
     <string name="user_load_state_text_error">Error occurred while connecting to the internet</string>
     <string name="user_load_state_btn_retry">Retry</string>
-
 
     <!-- activity main layout-->
     <string name="results_could_not_be_loaded">Results could not be loaded</string>
@@ -13,5 +12,23 @@
     <string name="retry">Retry</string>
     <string name="main_menu_search">Search users</string>
     <string name="search_hint">Search users…</string>>
+
+    <!-- User Details -->
+    <string name="user_name">Name: %1$s</string>
+    <string name="location">Location: %1$s</string>
+    <string name="company">Company: %1$s</string>
+    <string name="followers">Followers: %1$s</string>
+    <string name="publicGists">Public Gists: %1$s</string>
+    <string name="publicRepos">Public Repos: %1$s</string>
+    <string name="lastUpdate">Last update: %1$s</string>
+    <string name="accountCreated">Account created: %1$s</string>
+    <string name="placeholder_url">url</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_1">Search</string>
+    <string name="tab_text_2">Favorites</string>
+
+    <string name="message_title">Network Error</string>
+    <string name="message_text">Sorry!\nThis App requires an Internet Connection</string>
+    <string name="quit">Quit</string>
 
 </resources>
