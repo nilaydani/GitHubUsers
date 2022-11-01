@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -14,9 +15,7 @@ import com.nilay.githubusers.databinding.ActivityUserDetailBinding
 import com.nilay.githubusers.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_user_detail.*
-/**
- * A placeholder fragment containing a simple view.
- */
+
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
@@ -28,6 +27,9 @@ class DetailActivity : AppCompatActivity() {
         userViewModel.callUserDetailsApi(intent?.getStringExtra(BUNDLE_ARG_USER_NAME)?:"android")
         _binding = ActivityUserDetailBinding.inflate(layoutInflater)
         setContentView(_binding?.root)
+        toolbarDetails.setNavigationOnClickListener {
+            finish()
+        }
         userViewModel.liveDataUserDetail.observe(this, Observer { result->
             println(result)
             Glide.with(this)

@@ -1,71 +1,91 @@
 package com.nilay.githubusers.presentation.fav
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.nilay.githubusers.databinding.FragmentMainBinding
-import com.nilay.githubusers.presentation.main.PageViewModel
+import androidx.fragment.app.viewModels
+import androidx.paging.PagingData
+import androidx.recyclerview.widget.RecyclerView
+import com.nilay.githubusers.adapter.UserLoadStateAdapter
+import com.nilay.githubusers.adapter.UsersAdapter
+import com.nilay.githubusers.databinding.FragmentFavBinding
+import com.nilay.githubusers.viewmodel.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_fav.*
+
 
 /**
  * A placeholder fragment containing a simple view.
  */
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
 
-    private lateinit var pageViewModel: PageViewModel
-    private var _binding: FragmentMainBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private val userViewModel by viewModels<UserViewModel>()
+    private var _binding: FragmentFavBinding? = null
     private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        pageViewModel = ViewModelProvider(this)[PageViewModel::class.java].apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        val root = binding.root
-
-        val textView: TextView = binding.sectionLabel
-        pageViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        _binding = FragmentFavBinding.inflate(layoutInflater)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private const val ARG_SECTION_NUMBER = "section_number"
+    override fun onResume() {
+        super.onResume()
+//        userViewModel.getAllFavUsers()
+    }
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        @JvmStatic
-        fun newInstance(sectionNumber: Int): FavoritesFragment {
-            return FavoritesFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val adapter = UsersAdapter(requireActivity(), userViewModel, favAdapter = true) {
+            userViewModel.addUsrToDB(it)
+        }
+        adapter.stateRestorationPolicy =
+            RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+
+        recyclerViewFav.itemAnimator = null
+        //add a load state footer to the recyclerview
+        recyclerViewFav.adapter = adapter.withLoadStateFooter(
+            footer = UserLoadStateAdapter { adapter.retry() }
+        )
+        recyclerViewFav.itemAnimator?.changeDuration = 0
+        userViewModel.liveDataFav.observe(viewLifecycleOwner){
+            adapter.submitData(this.lifecycle,PagingData.from(it))
         }
     }
 
+    companion object {
+
+        @JvmStatic
+        fun newInstance(): FavoritesFragment {
+            return FavoritesFragment()
+        }
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser){
+            userViewModel.getAllFavUsers()
+            hideKeyboard(requireActivity())
+        }
+    }
+    private fun hideKeyboard(activity: Activity) {
+        val imm: InputMethodManager =
+            activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view = activity.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

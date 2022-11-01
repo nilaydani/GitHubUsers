@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
     // instance of the userview model
-    private val viewModel by viewModels<UserViewModel>()
+    private val userViewModel by viewModels<UserViewModel>()
 
     /**
      * lateinit [ActivityMainBinding] class and promise the kotlin compiler
@@ -51,7 +51,9 @@ class SearchFragment : Fragment() {
 
     private fun updateUI(it: Boolean) {
         // instance of user adapter class
-        val adapter = UsersAdapter(requireActivity())
+        val adapter = UsersAdapter(requireActivity(), userViewModel, favAdapter = false) {
+            userViewModel.addUsrToDB(it)
+        }
         //bind the views
         binding.apply {
             recyclerView.setHasFixedSize(true)
@@ -76,7 +78,7 @@ class SearchFragment : Fragment() {
         }
 
         // observer the data returned by the viewmodel
-        viewModel.users.observe(requireActivity()) {
+        userViewModel.users.observe(requireActivity()) {
             adapter.submitData(this.lifecycle, it)
         }
 
@@ -127,18 +129,12 @@ class SearchFragment : Fragment() {
         binding.etSearch.text?.trim().toString().let {
             if (it.isNotEmpty()) {
                 binding.recyclerView.scrollToPosition(0)
-                viewModel.searchUsers(it)
+                userViewModel.searchUsers(it)
             }
         }
     }
 
     companion object {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private const val ARG_SECTION_NUMBER = "section_number"
-
         /**
          * Returns a new instance of this fragment for the given section
          * number.

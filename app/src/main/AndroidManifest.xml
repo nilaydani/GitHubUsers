@@ -28,6 +28,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@style/AppTheme.NoActionBar"
             android:name=".presentation.details.DetailActivity"
             android:exported="true">
         </activity>

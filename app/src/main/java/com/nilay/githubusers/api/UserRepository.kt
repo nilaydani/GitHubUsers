@@ -3,9 +3,8 @@ package com.nilay.githubusers.api
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.nilay.githubusers.model.User
+import com.nilay.githubusers.room.UserDao
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,7 +17,8 @@ import javax.inject.Singleton
 @Singleton
 class UserRepository @Inject constructor(
     private val usersApi: UsersApi,
-    private val userDetailsApi: UserDetailsApi
+    private val userDetailsApi: UserDetailsApi,
+    private val userDao: UserDao
 ) {
 
     /**
@@ -40,7 +40,22 @@ class UserRepository @Inject constructor(
         const val MAX_SIZE = 100
     }
 
-    suspend fun getUserDetails(name: String) =
+    fun getUserDetails(name: String) =
         userDetailsApi.getUserDetail(name)
 
+    fun addUserToFav(user: User) {
+        userDao.insertUser(user)
+    }
+
+    fun getAllfavUsers(): List<User> {
+        return userDao.getAllUsers()
+    }
+
+    fun getUserById(id: String): Boolean {
+        return userDao.isRowIsExist(id)
+    }
+
+    fun removeFav(user: User) {
+        userDao.deleteUser(user.id)
+    }
 }

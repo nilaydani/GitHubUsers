@@ -23,7 +23,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> SearchFragment.newInstance()
-            1 -> FavoritesFragment.newInstance(position + 1)
+            1 -> FavoritesFragment.newInstance()
             else -> {
                 SearchFragment.newInstance()
             }
