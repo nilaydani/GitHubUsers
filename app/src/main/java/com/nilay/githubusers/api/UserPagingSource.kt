@@ -41,4 +41,8 @@ class UserPagingSource(
             LoadResult.Error(exception)
         }
     }
+
+    override fun getRefreshKey(state: PagingState<Int, User>): Int? {
+       return state.anchorPosition
+    }
 }
