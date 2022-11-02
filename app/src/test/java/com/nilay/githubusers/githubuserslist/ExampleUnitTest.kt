@@ -1,4 +1,4 @@
-package com.nilay.githubusers
+package com.testmobile.githubuserslist
 
 import org.junit.Test
 

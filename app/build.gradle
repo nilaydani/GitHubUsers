@@ -110,6 +110,10 @@ dependencies {
     implementation "androidx.room:room-runtime:2.4.3"
     kapt "androidx.room:room-compiler:2.4.3"
 
+    // Rx
+    implementation "io.reactivex.rxjava2:rxjava:2.0.1"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+
     // for instrumented tests
     androidTestImplementation "androidx.test.ext:junit:1.1.3"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
