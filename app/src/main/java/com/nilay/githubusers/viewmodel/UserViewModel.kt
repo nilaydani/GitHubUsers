@@ -38,7 +38,7 @@ class UserViewModel @Inject constructor(
 
     // query to get users
     fun searchUsers(query: String) {
-        GlobalScope.launch(Dispatchers.Main) {
+        CoroutineScope(Dispatchers.IO).launch {
             liveDataSearchResults.postValue(query)
         }
 
